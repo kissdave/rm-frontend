@@ -1,0 +1,11 @@
+export * from './LoanApi';
+import { LoanApi } from './LoanApi';
+export * from './RequestApi';
+import { RequestApi } from './RequestApi';
+export * from './ResourceApi';
+import { ResourceApi } from './ResourceApi';
+export * from './ResourceFaultApi';
+import { ResourceFaultApi } from './ResourceFaultApi';
+export * from './ResourceTypeApi';
+import { ResourceTypeApi } from './ResourceTypeApi';
+export const APIS = [LoanApi, RequestApi, ResourceApi, ResourceFaultApi, ResourceTypeApi];
