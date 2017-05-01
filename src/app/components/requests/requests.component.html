@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Foglalások</h1>
+</div>
+
+<div class="well">
+  <a [routerLink]="['/request', 0]">
+    <button type="button" class="btn btn-primary btn-lg btn-block">Új foglalás leadása</button>
+  </a>
+</div>
+
+
+<table class="table table-hovered table-bordered">
+  <thead>
+  <th>Foglalás időpontja</th>
+  <th>Foglalt erőforrás</th>
+  <th>Állapot</th>
+  <th>Esemény neve</th>
+  <th>Eszközök</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let request of requests">
+    <td>{{request.dateFrom | date : "yyyy-MM-dd H:mm"}} - {{request.dateTo | date : "yyyy-MM-dd H:mm"}}</td>
+    <td>{{request.resource.resourceName}}</td>
+    <td>{{request.requestStatus.name}}</td>
+    <td>{{request.eventName}}</td>
+    <td>
+      <button class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span> Elfogadás
+      </button>
+      <button class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove"></span> Elutasítás
+      </button>
+      <a href="/request/{{request.requestID}}">
+        <button class="btn btn-info">
+          <span class="glyphicon glyphicon-pencil"></span> Módosítás
+        </button>
+      </a>
+    </td>
+  </tr>
+  </tbody>
+</table>
