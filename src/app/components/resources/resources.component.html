@@ -1,0 +1,103 @@
+<div class="page-header">
+  <h1>Erőforrások adminisztrációja</h1>
+</div>
+
+<div *ngIf='message != ""' class="alert alert-success">{{message}}</div>
+
+<div class="alert alert-info">{{actResource.resourceType.name}} - {{actResource.resourceType.resourceTypeID}}</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><a data-toggle="collapse" href="#collapseResource" aria-expanded="false"
+                                aria-controls="collapseResource">Új erőforrás hozzáadása</a></div>
+  <form method="post" accept-charset="UTF-8">
+    <div class="panel-body collapse" id="collapseResource">
+
+      <div class="form-group">
+        <label for="resourceName">Erőforrás megnevezése</label>
+        <input [(ngModel)]="actResource.resourceName" type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Név" value=""/>
+      </div>
+      <div class="form-group">
+        <label for="description">Erőforrás leírása</label>
+        <input [(ngModel)]="actResource.resourceDescription" type="text" class="form-control" id="description" name="description" placeholder="Leírás" value=""/>
+      </div>
+      <div class="form-group">
+        <label for="resourceTypeID">Erőforrás típusa</label>
+        <select [(ngModel)]="actResource.resourceType" class="form-control" id="resourceTypeID" name="resourceTypeID">
+          <option *ngFor="let rt of resourceTypes" [ngValue]="rt" [selected]="rt == actResource.resourceType">{{rt.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="checkbox">
+        <label>
+          <input [(ngModel)]="actResource.active" type="checkbox" id="active" name="active" value="true"/><input type="hidden" name="_active"
+                                                                                value="on"/> Aktív
+          <small>(használható)</small>
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input [(ngModel)]="actResource.archived" type="checkbox" id="archived" name="archived" value="true"/><input type="hidden" name="_archived"
+                                                                                    value="on"/>
+          Archivált
+          <small>(megszűnt)</small>
+        </label>
+      </div>
+      <input (click)="onSubmitResourceForm()" type="submit" class="btn btn-primary btn-block" value="Küldés"/>
+
+    </div>
+  </form>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><a data-toggle="collapse" href="#collapseResourceType" aria-expanded="false"
+                                aria-controls="collapseResourceType">Új erőforrástípus hozzáadása</a></div>
+  <form method="post" accept-charset="UTF-8">
+    <div class="panel-body collapse" id="collapseResourceType">
+
+      <div class="form-group">
+        <label for="resourceName">Erőforrás megnevezése</label>
+        <input [(ngModel)]="actResourceType.name" type="text" class="form-control" id="name" name="name" placeholder="Név" value=""/>
+      </div>
+      <div class="form-group">
+        <label for="description">Erőforrás leírása</label>
+        <input [(ngModel)]="actResourceType.description" type="text" class="form-control" id="description" name="description" placeholder="Leírás" value=""/>
+      </div>
+      <input (click)="onSubmitResourceTypeForm()" type="submit" class="btn btn-primary btn-block" value="Küldés"/>
+
+    </div>
+  </form>
+</div>
+
+<table class="table table-hovered table-bordered">
+  <thead>
+  <th>Erőforrás neve</th>
+  <th>Erőforrás típusa</th>
+  <th>Erőforrás leírása</th>
+  <th>Erőforrás használható</th>
+  <th>Erőforrás archív (megszűnt)</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let r of resources">
+    <td><a (click)="setResource(r)">{{r.resourceName}}</a></td>
+    <td>{{r.resourceType.name}}</td>
+    <td>{{r.resourceDescription}}</td>
+    <td>{{r.active}}</td>
+    <td>{{r.archived}}</td>
+  </tr>
+  </tbody>
+</table>
+
+
+<table class="table table-hovered table-bordered">
+  <thead>
+  <th>Erőforrástípus neve</th>
+  <th>Erőforrástípus leírása</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let rt of resourceTypes">
+    <td><a (click)="setResourceType(rt)">{{rt.name}}</a></td>
+    <td>{{rt.description}}</td>
+  </tr>
+  </tbody>
+</table>
