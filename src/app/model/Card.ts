@@ -19,4 +19,6 @@ export interface Card {
 
     cardDescription?: string;
 
+    user?: models.User;
+
 }

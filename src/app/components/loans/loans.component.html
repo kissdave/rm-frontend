@@ -1,0 +1,247 @@
+<div class="page-header">
+  <h1>Kölcsönzések</h1>
+</div>
+
+<div class="alert alert-success" *ngIf="message != ''">{{message}}</div>
+
+<!-- Modal -->
+<div class="modal fade" id="CardAddingModal" tabindex="-1" role="dialog" aria-labelledby="CardAddingModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="CardAddingModalLabel">Kártya hozzáadása</h4>
+      </div>
+      <form accept-charset="UTF-8">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="cardNumber">Kártya azonosítója</label>
+            <input [(ngModel)]="tempCard.cardNum" type="text" class="form-control" id="cardAddNumber"
+                   name="cardAddNumber"
+                   placeholder="Ehhez olvasd le a kártyát" autofocus="true"/>
+          </div>
+          <div class="form-group">
+            <label for="cardNumber">Kártya típusa</label>
+            <input [(ngModel)]="tempCard.cardDescription" type="text" class="form-control" id="cardDescription"
+                   name="cardDescription"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onSubmitCardAddForm()" data-dismiss="modal">Hozzáadás
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="TableModal" tabindex="-1" role="dialog" aria-labelledby="TableModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="TableModalLabel">Felhasználó kiválasztása</h4>
+      </div>
+      <form accept-charset="UTF-8">
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+            <th>Teljes név</th>
+            <th>E-mail cím</th>
+            <th>Eszközök</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{user.fullName}}</td>
+              <td>{{user.email}}</td>
+              <td>
+                <button class="btn btn-success" (click)="showCardAddModal(user)" data-toggle="modal"
+                        data-target="#CardAddingModal" data-dismiss="modal">Kártya hozzáadása
+                </button>
+                <button class="btn btn-success" (click)="onSubmitTableForm(user)" data-dismiss="modal">Kiválasztás
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="CardModal" tabindex="-1" role="dialog" aria-labelledby="CardModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Kártya olvasása</h4>
+      </div>
+      <form accept-charset="UTF-8">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="cardNumber">Kártya azonosítója</label>
+            <input [(ngModel)]="cardNumber" type="text" class="form-control" id="cardNumber" name="cardNumber"
+                   placeholder="Kártya azonosítója" (keyup.enter)="onSubmitCardForm()" autofocus="true"/>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><a data-toggle="collapse" href="#collapseFault" aria-expanded="false"
+                                aria-controls="collapseFault">Kölcsönzés hozzáadása / szerkesztése</a></div>
+  <div class="panel-body collapse" id="collapseFault">
+    <form method="post" accept-charset="UTF-8">
+      <div class="form-group">
+        <label for="resourceID">Erőforrás</label>
+        <select class="form-control" id="resourceID" name="resourceID" [(ngModel)]="actLoan.resource">
+          <option *ngFor="let r of resources" [ngValue]="r">{{r.resourceName}}</option>
+        </select>
+      </div>
+
+      <div class="panel panel-warning">
+        <div class="panel-heading">Kiadás</div>
+        <div class="panel-body">
+
+          <div class="form-group">
+            <label for="dateOfLoan">Kiadás ideje</label>
+            <input type="text" class="form-control" id="dateOfLoan"
+                   name="dateOfLoan" placeholder=""
+                   value="" [(ngModel)]="actLoan.dateOfLoan"/>
+          </div>
+          <div class="form-group">
+            <label for="expectedReturn">Várható visszaérkezés</label>
+            <input type="text" class="form-control" id="expectedReturn"
+                   name="expectedReturn" placeholder=""
+                   value="" [(ngModel)]="actLoan.expectedReturn"/>
+          </div>
+          <div class="form-group">
+            <label for="adminOfIssue">Átadó</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="adminOfIssue"
+                     name="adminOfIssue" [(ngModel)]="actLoan.adminOfIssue.fullName" readonly/>
+              <span class="input-group-btn">
+              <button class="btn btn-info" (click)="showCardModal('adminOfIssue')" data-toggle="modal"
+                      data-target="#TableModal">Listából</button>
+              <button class="btn btn-success" (click)="showCardModal('adminOfIssue')" data-toggle="modal"
+                      data-target="#CardModal">Kártyával</button>
+            </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="clientOfIssue">Átvevő</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="clientOfIssue"
+                     name="clientOfIssue" placeholder=""
+                     value="" [(ngModel)]="actLoan.clientOfIssue.fullName" readonly/>
+              <span class="input-group-btn">
+              <button class="btn btn-info" (click)="showCardModal('clientOfIssue')" data-toggle="modal"
+                      data-target="#TableModal">Listából</button>
+              <button class="btn btn-success" (click)="showCardModal('clientOfIssue')" data-toggle="modal"
+                      data-target="#CardModal">Kártyával</button>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-success">
+        <div class="panel-heading">Visszavétel</div>
+        <div class="panel-body">
+
+          <div class="form-group">
+            <label for="dateOfReturn">Visszavétel ideje</label>
+            <input type="text" class="form-control" id="dateOfReturn"
+                   name="dateOfReturn" placeholder=""
+                   value="" [(ngModel)]="actLoan.dateOfReturn"/>
+
+          </div>
+          <div class="form-group">
+            <label for="adminOfWithdraw">Visszavette</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="adminOfWithdraw"
+                     name="adminOfWithdraw" placeholder="" [(ngModel)]="actLoan.adminOfWithdraw.fullName"
+                     value="" readonly/>
+              <span class="input-group-btn">
+              <button class="btn btn-info" (click)="showCardModal('adminOfWithdraw')" data-toggle="modal"
+                      data-target="#TableModal">Listából</button>
+              <button class="btn btn-success" (click)="showCardModal('adminOfWithdraw')" data-toggle="modal"
+                      data-target="#CardModal">Kártyával</button>
+            </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="clientOfWithdraw">Kölcsönző (visszahozta)</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="clientOfWithdraw"
+                     name="clientOfWithdraw" placeholder="" [(ngModel)]="actLoan.clientOfWithdraw.fullName"
+                     value="" readonly/>
+              <span class="input-group-btn">
+              <button class="btn btn-info" (click)="showCardModal('clientOfWithdraw')" data-toggle="modal"
+                      data-target="#TableModal">Listából</button>
+              <button class="btn btn-success" (click)="showCardModal('clientOfWithdraw')" data-toggle="modal"
+                      data-target="#CardModal">Kártyával</button>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <input type="submit" class="btn btn-primary btn-block" (click)="submitLoan()" value="Küldés"/>
+    </form>
+  </div>
+</div>
+
+<table class="table table-hovered table-bordered">
+  <thead>
+  <th>Kölcsönzés ideje</th>
+  <th>Kölcsönzött eszköz</th>
+  <th>Kiadta</th>
+  <th>Elvitte</th>
+  <th>Eszközök</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let loan of loans">
+    <td><span *ngIf="loan.dateOfLoan">{{loan.dateOfLoan}}</span></td>
+    <td><span *ngIf="loan.resource">{{loan.resource.resourceName}}</span></td>
+    <td><span *ngIf="loan.adminOfIssue">{{loan.adminOfIssue.fullName}}</span></td>
+    <td><span *ngIf="loan.clientOfIssue">{{loan.clientOfIssue.fullName}}</span></td>
+    <td>
+      <button class="btn btn-info" (click)="showModal(loan)" data-toggle="modal" data-target="#commentModal"><span
+        class="glyphicon glyphicon-pencil"></span> Módosítás
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  // Every time a modal is shown, if it has an autofocus element, focus on it.
+  $('.modal').on('shown.bs.modal', function () {
+    $(this).find('[autofocus]').focus();
+  });
+</script>
