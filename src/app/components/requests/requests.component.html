@@ -19,19 +19,19 @@
   </thead>
   <tbody>
   <tr *ngFor="let request of requests">
-    <td>{{request.dateFrom | date : "yyyy-MM-dd H:mm"}} - {{request.dateTo | date : "yyyy-MM-dd H:mm"}}</td>
-    <td>{{request.resource.resourceName}}</td>
-    <td>{{request.requestStatus.name}}</td>
-    <td>{{request.eventName}}</td>
+    <td><span *ngIf="request">{{request.dateFrom | date : "yyyy-MM-dd H:mm"}} - {{request.dateTo | date : "yyyy-MM-dd H:mm"}}</span></td>
+    <td><span *ngIf="request.resource">{{request.resource.resourceName}}</span></td>
+    <td><span *ngIf="request.requestStatus">{{request.requestStatus.name}}</span></td>
+    <td><span *ngIf="request && request.eventName">{{request.eventName}}</span></td>
     <td>
-      <button class="btn btn-success">
+      <button class="btn btn-success" (click)="approve(request)">
         <span class="glyphicon glyphicon-ok"></span> Elfogadás
       </button>
-      <button class="btn btn-danger">
+      <button class="btn btn-danger" (click)="decline(request)">
         <span class="glyphicon glyphicon-remove"></span> Elutasítás
       </button>
-      <a href="/request/{{request.requestID}}">
-        <button class="btn btn-info">
+      <a [routerLink]="['/request', request.requestID]">
+        <button class="btn btn-info" >
           <span class="glyphicon glyphicon-pencil"></span> Módosítás
         </button>
       </a>

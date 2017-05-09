@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 
 import {Request} from "../../model/Request";
-import {RequestService} from "../../service/request.service";
 import {RequestApi} from "../../api/RequestApi";
 
 import "rxjs/add/operator/toPromise";
@@ -18,8 +17,30 @@ export class RequestsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.updateRequests();
+  }
+
+  public updateRequests() {
     this.requestApi.requestsGet()
       .toPromise()
       .then(requests => this.requests = requests);
+  }
+
+  public approve(request: Request) {
+    this.requestApi.approveRequestIDPost(request.requestID, true)
+      .toPromise()
+      .then(data => {
+        console.log(data);
+        this.updateRequests();
+      });
+  }
+
+  public decline(request: Request) {
+    this.requestApi.approveRequestIDPost(request.requestID, false)
+      .toPromise()
+      .then(data => {
+        console.log(data);
+        this.updateRequests();
+      });
   }
 }
